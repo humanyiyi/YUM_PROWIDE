@@ -5,7 +5,7 @@ import org.apache.hadoop.io.WritableComparator;
 import org.apache.log4j.Logger;
 
 /**
- * Created by root on 2016/7/25.
+ * Created by chaoslane@126.com on 2016/7/25.
  */
 public class DefinedComparator extends WritableComparator {
     private static final Logger logger = Logger.getLogger(DefinedKey.class);
@@ -26,7 +26,7 @@ public class DefinedComparator extends WritableComparator {
             return c1.getDeviceId().compareTo(c2.getDeviceId());
         } else {
             logger.debug("---------退出自定义排序2---------");
-            return Integer.compare(c1.getTimeStr(), c2.getTimeStr());
+            return Long.compare(c1.getTimeStr(), c2.getTimeStr());
         }
 
     }

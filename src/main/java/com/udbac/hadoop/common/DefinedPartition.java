@@ -5,7 +5,7 @@ import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.log4j.Logger;
 
 /**
- * Created by 43890 on 2016/9/7.
+ * Created by chaoslane@126.com on 2016/7/25.
  */
 public class DefinedPartition extends Partitioner<DefinedKey, Text> {
     private static final Logger logger = Logger.getLogger(DefinedKey.class);

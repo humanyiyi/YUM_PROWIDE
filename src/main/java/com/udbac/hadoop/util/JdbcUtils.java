@@ -6,6 +6,7 @@ import java.util.Properties;
 /**
  * Created by root on 2016/7/28.
  */
+
 public final class JdbcUtils {
     private static Properties ps = new Properties();
     private static final String db_setting = "/system-config.properties";

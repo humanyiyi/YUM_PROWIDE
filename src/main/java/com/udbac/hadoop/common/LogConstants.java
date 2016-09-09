@@ -1,10 +1,7 @@
 package com.udbac.hadoop.common;
 
-import org.apache.commons.lang.StringUtils;
-import sun.swing.StringUIClientPropertyKey;
-
 /**
- * Created by root on 2016/7/12.
+ * Created by chaoslane@126.com on 2016/7/25.
  */
 public class LogConstants {
     /**
@@ -28,6 +25,7 @@ public class LogConstants {
      */
     public static final String LOG_SEPARTIOR = " ";
 
+
     public enum UserDomain {
         OUTTAKE("m.4008823823.com.cn", "outtake"),
         SELFTAKE("order.kfc.com.cn", "selftake"),
@@ -41,7 +39,7 @@ public class LogConstants {
             this.alias = alias;
         }
 
-        public static String getAlias(String domainName) {
+        public static String getDomainType(String domainName) {
             for (UserDomain userDomain : values()) {
                 domainName.trim();
                 if (userDomain.getDomainName().equals(domainName)) {
@@ -50,15 +48,43 @@ public class LogConstants {
             }
             return DEFAULT_VALUE;
         }
-
         public String getDomainName() {
             return domainName;
         }
-
         public String getAlias() {
             return alias;
         }
-
     }
 
+    public enum ClickEvent {
+        BANNER1("1","banner1"),
+        FIRSTPAGESEND("2","firstsend"),
+        SELFTAKEBUTTON("3","selfbutton"),
+        MEMBERBUTTON("4","membutton"),
+        HOMEPAGESEND("5","homesend");
+
+        public String eventURI;
+        public String alias;
+
+        ClickEvent(String eventURI, String alias) {
+            this.eventURI = eventURI;
+            this.alias = alias;
+        }
+
+        public String getClickEventType(String eventURI) {
+            for (ClickEvent clickEvent : values()) {
+                if (clickEvent.getEventURI().equals(eventURI)) {
+                    return clickEvent.getAlias();
+                }
+            }
+            return DEFAULT_VALUE;
+        }
+
+        public String getEventURI() {
+            return eventURI;
+        }
+        public String getAlias() {
+            return alias;
+        }
+    }
 }

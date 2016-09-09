@@ -17,7 +17,7 @@ import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
 /**
- * Created by root on 2016/7/22.
+ * Created by chaoslane@126.com on 2016/7/25.
  */
 public class LogAnalyserRunner implements Tool {
     private static Logger logger = Logger.getLogger(LogAnalyserRunner.class);
@@ -27,7 +27,7 @@ public class LogAnalyserRunner implements Tool {
         try {
             ToolRunner.run(new Configuration(), new LogAnalyserRunner(), args);
         } catch (Exception e) {
-            logger.info("执行JOB异常", e);
+            logger.error("执行JOB异常", e);
             throw new RuntimeException(e);
         }
     }
@@ -39,7 +39,7 @@ public class LogAnalyserRunner implements Tool {
 
     @Override
     public void setConf(Configuration configuration) {
-//        conf.set("mapred.jar", "");
+
     }
 
     @Override
@@ -53,7 +53,7 @@ public class LogAnalyserRunner implements Tool {
         String inputPath = inputArgs[0];
         String outputPath = inputArgs[1];
         conf.set(LogConstants.RUNNING_DATE_PARAMES, TimeUtil.getYesterday());
-        conf.set("inputPath", inputPath);
+        conf.set("inputPath_directorry_name", inputPath);
 
         Job job1 = Job.getInstance(conf, "LogAnalyserMap");
         TextInputFormat.addInputPath(job1, new Path(inputPath));
@@ -61,15 +61,14 @@ public class LogAnalyserRunner implements Tool {
 
         job1.setJarByClass(LogAnalyserRunner.class);
         job1.setMapperClass(LogAnalyserMapper.class);
+        job1.setReducerClass(LogAnalyserReducer.class);
 
         job1.setMapOutputKeyClass(DefinedKey.class);
         job1.setMapOutputValueClass(Text.class);
-        job1.setReducerClass(LogAnalyserReducer.class);
         job1.setSortComparatorClass(DefinedComparator.class);
         job1.setGroupingComparatorClass(DefinedGroupSort.class);
         job1.setPartitionerClass(DefinedPartition.class);
         job1.setNumReduceTasks(1);
-
 
         return job1.waitForCompletion(true) ? 0 : -1;
     }

@@ -5,7 +5,7 @@ import org.apache.hadoop.io.WritableComparator;
 import org.apache.log4j.Logger;
 
 /**
- * Created by root on 2016/7/25.
+ * Created by chaoslane@126.com on 2016/7/25.
  */
 public class DefinedGroupSort extends WritableComparator {
     private static final Logger logger = Logger.getLogger(DefinedKey.class);

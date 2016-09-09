@@ -10,8 +10,9 @@ import org.apache.hadoop.fs.PathFilter;
 import java.io.IOException;
 
 /**
- * Created by root on 2016/8/17.
+ * Created by chaoslane@126.com on 2016/7/25.
  */
+
 public class TextPathFilter extends Configured implements PathFilter {
     @Override
     public boolean accept(Path path) {
