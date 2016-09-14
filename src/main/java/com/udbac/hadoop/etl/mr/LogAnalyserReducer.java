@@ -21,6 +21,7 @@ import java.util.UUID;
 
 /**
  * Created by chaoslane@126.com on 2016/7/25.
+ * 根据有序的时间 进行session重建 把30分钟内的行为 合并为一个访次
  */
 public class LogAnalyserReducer extends Reducer<DefinedKey, Text, NullWritable, Text> {
     private final Logger logger = Logger.getLogger(LogAnalyserReducer.class);
@@ -39,15 +40,22 @@ public class LogAnalyserReducer extends Reducer<DefinedKey, Text, NullWritable, 
         }
     }
 
+    /**
+     * session重建的方法
+     * @param values 即一根据 用户ID 分组的 value list
+     * @return 一个或多个访次的map集合
+     */
     private static Map<String, WideTable> getOneVisitMap(Iterable<Text> values) {
         long cur,tmp,last = 0 ;
         BigDecimal duration = null;
         WideTable wideTable = null;
+        //每一个 Map.Entry KEY为生成的javaUUID VALUE为多个行为合并之后的一个访次的信息
         Map<String, WideTable> oneVisit = new HashMap<>();
         for (Text text : values) {
             String log = text.toString();
             String[] logSplits = log.split("\\|");
             cur = TimeUtil.parseStringDate2Long(logSplits[1]);
+            //小于30分钟的 则进行时长叠加 && routeevent的合并（有为1，无为0）
             if (cur - last < LogConstants.HALFHOUR_OF_MILLISECONDS) {
                 tmp = cur - last;
                 duration = duration.add(BigDecimal.valueOf(tmp));
@@ -58,6 +66,7 @@ public class LogAnalyserReducer extends Reducer<DefinedKey, Text, NullWritable, 
                 wideTable.setWt_cart(wideTable.getWt_cart() | Integer.valueOf(logSplits[9]));
                 wideTable.setWt_suc(wideTable.getWt_suc() | Integer.valueOf(logSplits[10]));
                 wideTable.setWt_pay(wideTable.getWt_pay() | Integer.valueOf(logSplits[11]));
+            //大于30分钟的 则new一个新的对象，并放入到访次集合中
             } else {
                 duration = BigDecimal.ZERO;
                 wideTable = WideTable.parse(log);
@@ -69,6 +78,7 @@ public class LogAnalyserReducer extends Reducer<DefinedKey, Text, NullWritable, 
         return oneVisit;
     }
 
+    //操作WideTable 进行一些解析的操作
     private static void handleTab(WideTable wideTable) {
         //解析IP
         String uip = wideTable.getDcssip();

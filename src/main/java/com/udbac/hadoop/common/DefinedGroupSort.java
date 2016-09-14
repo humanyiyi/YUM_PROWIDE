@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Created by chaoslane@126.com on 2016/7/25.
+ * 进行自定义分组 根据自定义key的 第一个field 即用户ID进行分组
  */
 public class DefinedGroupSort extends WritableComparator {
     private static final Logger logger = Logger.getLogger(DefinedKey.class);
@@ -15,13 +16,13 @@ public class DefinedGroupSort extends WritableComparator {
     }
 
     @Override
-    public int compare(WritableComparable a, WritableComparable b) {
+    public int compare(WritableComparable combinationKeyOne, WritableComparable combinationKeyOther) {
         logger.debug("-------进入 自定义分组 flag-------");
-        DefinedKey ck1 = (DefinedKey) a;
-        DefinedKey ck2 = (DefinedKey) b;
-        logger.debug("-------自定义分组key:" + ck1.getDeviceId().
-                compareTo(ck2.getDeviceId()) + "-------");
+        DefinedKey keyOne = (DefinedKey) combinationKeyOne;
+        DefinedKey keyOther = (DefinedKey) combinationKeyOther;
+        logger.debug("-------自定义分组key:" + keyOne.getDeviceId().
+                compareTo(keyOther.getDeviceId()) + "-------");
         logger.debug("-------瑞出自定义分组 flag-------");
-        return ck1.getDeviceId().compareTo(ck2.getDeviceId());
+        return keyOne.getDeviceId().compareTo(keyOther.getDeviceId());
     }
 }

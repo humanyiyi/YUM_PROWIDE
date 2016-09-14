@@ -2,6 +2,7 @@ package com.udbac.hadoop.common;
 
 /**
  * Created by chaoslane@126.com on 2016/7/25.
+ * 常量类
  */
 public class LogConstants {
     /**
@@ -25,7 +26,10 @@ public class LogConstants {
      */
     public static final String LOG_SEPARTIOR = " ";
 
-
+    /**
+     * 枚举类
+     * 从宽表中获取的用户类型 为domain域名 转换为alias 方便存入表中
+     */
     public enum UserDomain {
         OUTTAKE("m.4008823823.com.cn", "outtake"),
         SELFTAKE("order.kfc.com.cn", "selftake"),
@@ -39,6 +43,7 @@ public class LogConstants {
             this.alias = alias;
         }
 
+        //遍历枚举值
         public static String getDomainType(String domainName) {
             for (UserDomain userDomain : values()) {
                 domainName.trim();
@@ -56,6 +61,9 @@ public class LogConstants {
         }
     }
 
+    /**
+     * 枚举类型 业务4 点击事件
+     */
     public enum ClickEvent {
         BANNER1("1","banner1"),
         FIRSTPAGESEND("2","firstsend"),

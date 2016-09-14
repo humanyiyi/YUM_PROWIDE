@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by chaoslane@126.com on 2016/7/25.
+ * 读入数据源的mapper
  */
 
 public class LogAnalyserMapper extends Mapper<LongWritable, Text, DefinedKey, Text> {
@@ -31,10 +32,16 @@ public class LogAnalyserMapper extends Mapper<LongWritable, Text, DefinedKey, Te
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         Configuration configuration = context.getConfiguration();
+        //读取输入文件的文件夹名
         inputPath = configuration.get("inputPath_directorry_name");
         mapoutput.clear();
     }
 
+    /**
+     * 读入一行数据 根据分割符切割后 为自定义key赋值
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         try {

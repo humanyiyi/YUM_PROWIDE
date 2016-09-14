@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Created by chaoslane@126.com on 2016/7/25.
+ * 自定义排序类 根据自定义key的两个fields进行二次排序
  */
 public class DefinedComparator extends WritableComparator {
     private static final Logger logger = Logger.getLogger(DefinedKey.class);
@@ -15,18 +16,19 @@ public class DefinedComparator extends WritableComparator {
     }
 
     public int compare(WritableComparable combinationKeyOne,
-                       WritableComparable CombinationKeyOther) {
+                       WritableComparable combinationKeyOther) {
         logger.debug("---------进入自定义排序---------");
 
-        DefinedKey c1 = (DefinedKey) combinationKeyOne;
-        DefinedKey c2 = (DefinedKey) CombinationKeyOther;
+        DefinedKey keyOne = (DefinedKey) combinationKeyOne;
+        DefinedKey keyOther = (DefinedKey) combinationKeyOther;
 
-        if (!c1.getDeviceId().equals(c2.getDeviceId())) {
+        //二次
+        if (!keyOne.getDeviceId().equals(keyOther.getDeviceId())) {
             logger.debug("---------退出自定义排序1---------");
-            return c1.getDeviceId().compareTo(c2.getDeviceId());
+            return keyOne.getDeviceId().compareTo(keyOther.getDeviceId());
         } else {
             logger.debug("---------退出自定义排序2---------");
-            return Long.compare(c1.getTimeStr(), c2.getTimeStr());
+            return Long.compare(keyOne.getTimeStr(), keyOther.getTimeStr());
         }
 
     }

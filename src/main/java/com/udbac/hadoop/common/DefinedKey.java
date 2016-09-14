@@ -9,6 +9,9 @@ import java.io.IOException;
 
 /**
  * Created by chaoslane@126.com on 2016/7/25.
+ * 自定义 key
+ * field1为 用户id
+ * field2为用户行为时间戳
  */
 public class DefinedKey implements WritableComparable<DefinedKey> {
     private static final Logger logger = Logger.getLogger(DefinedKey.class);

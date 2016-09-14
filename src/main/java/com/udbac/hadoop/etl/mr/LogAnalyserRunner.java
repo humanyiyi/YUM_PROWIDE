@@ -16,6 +16,8 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
+import java.net.URI;
+
 /**
  * Created by chaoslane@126.com on 2016/7/25.
  */
@@ -52,16 +54,18 @@ public class LogAnalyserRunner implements Tool {
         }
         String inputPath = inputArgs[0];
         String outputPath = inputArgs[1];
+//        String ipDatFile = inputArgs[2];
         conf.set(LogConstants.RUNNING_DATE_PARAMES, TimeUtil.getYesterday());
         conf.set("inputPath_directorry_name", inputPath);
 
-        Job job1 = Job.getInstance(conf, "LogAnalyserMap");
+        Job job1 = Job.getInstance(conf, "LogAnalyserMR");
         TextInputFormat.addInputPath(job1, new Path(inputPath));
         TextOutputFormat.setOutputPath(job1, new Path(outputPath));
 
         job1.setJarByClass(LogAnalyserRunner.class);
         job1.setMapperClass(LogAnalyserMapper.class);
         job1.setReducerClass(LogAnalyserReducer.class);
+//        job1.addCacheFile(new URI(ipDatFile));
 
         job1.setMapOutputKeyClass(DefinedKey.class);
         job1.setMapOutputValueClass(Text.class);

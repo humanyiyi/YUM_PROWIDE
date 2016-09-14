@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * Created by chaoslane@126.com on 2016/7/25.
+ * 经过map进行二次排序之后 进入reduce的一行字符串 转化成实体类
  */
 public class WideTable {
     private String deviceId;
@@ -25,11 +26,11 @@ public class WideTable {
     private String wt_suc;
     private String wt_pay;
     private String wt_event;
-    private BigDecimal duration;
+    private BigDecimal duration = BigDecimal.ZERO;
 
     /**
      * 把map输出到reduce的一行字符串 转化为 WideTable对象
-     *
+     * field[i] 对应着 token[i] 利用反射循环赋值
      * @param mapinput
      * @return WideTable
      */
@@ -100,6 +101,7 @@ public class WideTable {
         this.spreadid = spreadid;
     }
 
+    //由于需要进行 | 运算 用户 routeevent相关字段 转换成Integer类型 减少reducer代码
     public Integer getWt_login() {
         return Integer.valueOf(wt_login);
     }

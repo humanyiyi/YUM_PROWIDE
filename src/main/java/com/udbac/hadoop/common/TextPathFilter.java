@@ -11,6 +11,8 @@ import java.io.IOException;
 
 /**
  * Created by chaoslane@126.com on 2016/7/25.
+ * 文件夹过滤 可以加入到job中
+ * 判断文件夹名是否为昨日日期 暂时未启用
  */
 
 public class TextPathFilter extends Configured implements PathFilter {
@@ -23,8 +25,8 @@ public class TextPathFilter extends Configured implements PathFilter {
             FileStatus fileStatus = fs.getFileStatus(path);
             if (fileStatus.isDirectory()) {
                 String name = path.getName();
-                if (TimeUtil.isValidateRunningDate(name)) {//文件夹名字 yyyyMMdd
-                    if (name.equals(date1)) {//目录名字是否为前一天日期 yyyyMMdd
+                if (TimeUtil.isValidateRunningDate(name)) {//文件夹名字 yyyy-MM-dd
+                    if (name.equals(date1)) {//目录名字是否为前一天日期 yyyy-MM-dd
                         return true;
                     }
                 }
